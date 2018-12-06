@@ -1,4 +1,4 @@
-class Dish < ApplicationRecord
+ class Dish < ApplicationRecord
   # Direct associations
 
   has_many   :bookmarks,
