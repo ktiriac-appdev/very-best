@@ -53,19 +53,10 @@
           });
       </script>
 
-        <div class="form-group">
-      <%= f.label :bookmarks_notes_cont, "Bookmark notes contains" %>
-      <%= f.text_field :bookmarks_notes_cont, :class => "form-control", :placeholder => "Bookmark notes contains" %>
-    </div>
 
 <div class="form-group">
       <%= f.label :neighborhood_name_cont, "Neighborhood name contains" %>
       <%= f.text_field :neighborhood_name_cont, :class => "form-control", :placeholder => "Neighborhood name contains" %>
-    </div>
-
-<div class="form-group">
-      <%= f.label :fans_username_cont, "User username contains" %>
-      <%= f.text_field :fans_username_cont, :class => "form-control", :placeholder => "User username contains" %>
     </div>
 
 <div class="form-group">
@@ -100,8 +91,8 @@
         <th>Neighborhood</th>
         <th>Actions</th>
       </tr>
-
-      <% @venues.each do |venue| %>
+      
+      <% current_user.bookmarked_venues.each do |venue| %>
       <tr>
         <td><a href="/venues/<%= venue.id %>"><%= venue.name %></td></a>
         <td>
