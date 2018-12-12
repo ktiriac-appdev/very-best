@@ -49,35 +49,6 @@
         </li>
       <% end %>
       
-
-<!-- A Venue has many bookmarks -->
-
-<div class="row">
-  <div class="col-md-12">
-    <ul class="list-group">
-      <li class="list-group-item list-group-item-info">
-        Bookmarks
-      </li>
-
-      <% @venue.bookmarks.each do |bookmark| %>
-        <li class="list-group-item">
-          <a href="/bookmarks/<%= bookmark.id %>">
-            <%= bookmark.notes %>
-          </a>
-          <div class="btn-group btn-group-xs float-right">
-            <a href="/bookmarks/<%= bookmark.id %>" class="btn btn-primary">
-              <i class="fa fa-search-plus"></i>
-            </a>
-            <a href="/bookmarks/<%= bookmark.id %>/edit" class="btn btn-warning">
-              <i class="fa fa-edit"></i>
-            </a>
-            <a href="/delete_bookmark/<%= bookmark.id %>" class="btn btn-danger" rel="nofollow">
-              <i class="fa fa-trash-o"></i>
-            </a>
-          </div>
-        </li>
-      <% end %>
-
       <li class="list-group-item">
         <form action="/create_bookmark" method="post">
 
@@ -109,41 +80,35 @@
         Create Bookmark
       </button>
     </form>
+    
+    <small class="float-right text-muted">
+      right now
+    </small>
+          
       </li>
-    </ul>
-  </div>
-</div>
-
-<!-- A Venue has many fans -->
-
-<div class="row">
-  <div class="col-md-12">
-    <ul class="list-group">
-      <li class="list-group-item list-group-item-info">
-        Fans
+      
+      <li class="list-group-item list-group-item-success">
+        Popular dishes here
       </li>
-
-      <% @venue.fans.each do |user| %>
+      
+      <% @venue.specialties.each do |dish| %>
         <li class="list-group-item">
-          <a href="/users/<%= user.id %>">
-            <%= user.username %>
+          <a href="/dishes/<%= dish.id %>">
+            <%= dish.name %>
           </a>
           <div class="btn-group btn-group-xs float-right">
-            <a href="/users/<%= user.id %>" class="btn btn-primary">
-              <i class="fa fa-search-plus"></i>
-            </a>
-            <a href="/users/<%= user.id %>/edit" class="btn btn-warning">
+            <small class="float-right text-muted">
+              <%= time_ago_in_words(Bookmark.where(dish_id: dish.id, venue_id: @venue.id, user_id: current_user.id).first.created_at) %> ago
+            <a href="/bookmarks/<%= Bookmark.where(dish_id: dish.id, venue_id: @venue.id, user_id: current_user.id).first.id %>/edit" class="btn">
               <i class="fa fa-edit"></i>
             </a>
-            <a href="/delete_user/<%= user.id %>" class="btn btn-danger" rel="nofollow">
+            <a href="/delete_bookmark/<%= Bookmark.where(dish_id: dish.id, venue_id: @venue.id, user_id: current_user.id).first.id %>" class="btn" rel="nofollow">
               <i class="fa fa-trash-o"></i>
             </a>
+            </small>
           </div>
         </li>
       <% end %>
-    </ul>
-  </div>
-</div>
 
 <!-- A Venue has many specialties -->
 
