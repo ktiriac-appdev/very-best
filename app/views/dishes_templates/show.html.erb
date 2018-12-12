@@ -40,7 +40,7 @@
          </a>
           
           <small class="float-right text-muted">
-          <%= time_ago_in_words(venue.created_at) %> ago
+          <%= time_ago_in_words(Bookmark.where(dish_id: @dish.id, venue_id: venue.id, user_id: current_user.id).first.created_at) %> ago
                 
           <div class="btn-group btn-group-xs float-right">
             
