@@ -30,33 +30,38 @@
           Dishes you loved here
         </li>
         
-        <% @venue.specialties.each do |dish| %>
+        <% if Bookmark.where(venue_id: @venue.id, user_id: current_user.id).count != 0 %>
+        
+        <% Bookmark.where(venue_id: @venue.id, user_id: current_user.id).each do |bookmark| %>
         <li class="list-group-item">
-          <a href="/dishes/<%= dish.id %>">
-            <%= dish.name %>
-          </a>
+           <a href="/dishes/<%= bookmark.dish.id %>">
+            <%= bookmark.dish.name %>
+           </a>
+           
+           <small class="float-right text-muted">
+          <%= time_ago_in_words(bookmark.created_at) %> ago
+                
           <div class="btn-group btn-group-xs float-right">
-            <small class="float-right text-muted">
-              <%= time_ago_in_words(Bookmark.where(dish_id: dish.id, venue_id: @venue.id, user_id: current_user.id).first.created_at) %> ago
-            <a href="/bookmarks/<%= Bookmark.where(dish_id: dish.id, venue_id: @venue.id, user_id: current_user.id).first.id %>/edit" class="btn">
-              <i class="fa fa-edit"></i>
+            
+            <a href="/bookmarks/<%= bookmark.id %>/edit">
+              <i class="fa fa-fw fa-edit"></i>
             </a>
-            <a href="/delete_bookmark/<%= Bookmark.where(dish_id: dish.id, venue_id: @venue.id, user_id: current_user.id).first.id %>" class="btn" rel="nofollow">
-              <i class="fa fa-trash-o"></i>
+            <a href="/delete_bookmark/<%= bookmark.id %>" rel="nofollow">
+              <i class="fa fa-fw fa-trash-o"></i>
             </a>
-            </small>
           </div>
-        </li>
-      <% end %>
+          </small>
+          </li>
+        <% end %>
+        
+        <% else %>
+        <% end %>
       
       <li class="list-group-item">
         <form action="/create_bookmark" method="post">
 
       <!-- Label and input for dish_id -->
       <div class="form-group">
-        <label for="dish_id" class="control-label">
-          Dish
-        </label>
 
         <%= select_tag(:dish_id, options_from_collection_for_select(Dish.all, :id, :name), :class => "form-control") %>
       </div>
@@ -96,50 +101,8 @@
           <a href="/dishes/<%= dish.id %>">
             <%= dish.name %>
           </a>
-          <div class="btn-group btn-group-xs float-right">
-            <small class="float-right text-muted">
-              <%= time_ago_in_words(Bookmark.where(dish_id: dish.id, venue_id: @venue.id, user_id: current_user.id).first.created_at) %> ago
-            <a href="/bookmarks/<%= Bookmark.where(dish_id: dish.id, venue_id: @venue.id, user_id: current_user.id).first.id %>/edit" class="btn">
-              <i class="fa fa-edit"></i>
-            </a>
-            <a href="/delete_bookmark/<%= Bookmark.where(dish_id: dish.id, venue_id: @venue.id, user_id: current_user.id).first.id %>" class="btn" rel="nofollow">
-              <i class="fa fa-trash-o"></i>
-            </a>
-            </small>
-          </div>
         </li>
       <% end %>
-
-<!-- A Venue has many specialties -->
-
-<div class="row">
-  <div class="col-md-12">
-    <ul class="list-group">
-      <li class="list-group-item list-group-item-info">
-        Specialties
-      </li>
-
-      <% @venue.specialties.each do |dish| %>
-        <li class="list-group-item">
-          <a href="/dishes/<%= dish.id %>">
-            <%= dish.name %>
-          </a>
-          <div class="btn-group btn-group-xs float-right">
-            <a href="/dishes/<%= dish.id %>" class="btn btn-primary">
-              <i class="fa fa-search-plus"></i>
-            </a>
-            <a href="/dishes/<%= dish.id %>/edit" class="btn btn-warning">
-              <i class="fa fa-edit"></i>
-            </a>
-            <a href="/delete_dish/<%= dish.id %>" class="btn btn-danger" rel="nofollow">
-              <i class="fa fa-trash-o"></i>
-            </a>
-          </div>
-        </li>
-      <% end %>
-    </ul>
-  </div>
-</div>
 
 
 <script src="//maps.google.com/maps/api/js?v=3.24&key=AIzaSyCOTPWiuvyyo6sKoIBzKA4-1ol-vTOIOlM"></script>
