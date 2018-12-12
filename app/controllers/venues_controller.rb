@@ -2,8 +2,17 @@ class VenuesController < ApplicationController
   def index
     @q = Venue.ransack(params.fetch("q", nil))
     @venues = @q.result(:distinct => true).includes(:bookmarks, :neighborhood, :fans, :specialties).page(params.fetch("page", nil)).per(10)
-
-    @location_hash = Gmaps4rails.build_markers(@venues.where.not(:address_latitude => nil)) do |venue, marker|
+    @venues.each do|venue|
+      sanitized_street_address = URI.encode(venue.address)
+      url = "https://maps.googleapis.com/maps/api/geocode/json?address="+sanitized_street_address+"&key=AIzaSyA5qwIlcKjijP_Ptmv46mk4cCjuWhSzS78"
+      parsed_data = JSON.parse(open(url).read)
+      @latitude = parsed_data.dig("results", 0, "geometry", "location", "lat")
+      @longitude = parsed_data.dig("results", 0, "geometry", "location", "lng")
+      venue.address_longitude=@longitude.to_f
+      venue.address_latitude=@latitude.to_f
+      venue.address_formatted_address=venue.address
+      end 
+    @location_hash = Gmaps4rails.build_markers(@venues) do |venue, marker|
       marker.lat venue.address_latitude
       marker.lng venue.address_longitude
       marker.infowindow "<h5><a href='/venues/#{venue.id}'>#{venue.created_at}</a></h5><small>#{venue.address_formatted_address}</small>"
@@ -16,6 +25,14 @@ class VenuesController < ApplicationController
   def show
     @bookmark = Bookmark.new
     @venue = Venue.find(params.fetch("id"))
+     sanitized_street_address = URI.encode(@venue.address)
+      url = "https://maps.googleapis.com/maps/api/geocode/json?address="+sanitized_street_address+"&key=AIzaSyA5qwIlcKjijP_Ptmv46mk4cCjuWhSzS78"
+      parsed_data = JSON.parse(open(url).read)
+      @latitude = parsed_data.dig("results", 0, "geometry", "location", "lat")
+      @longitude = parsed_data.dig("results", 0, "geometry", "location", "lng")
+      @venue.address_longitude=@longitude.to_f
+      @venue.address_latitude=@latitude.to_f
+      @venue.address_formatted_address=@venue.address
 
     render("venues_templates/show.html.erb")
   end
