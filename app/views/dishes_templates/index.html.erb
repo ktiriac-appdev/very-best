@@ -46,7 +46,7 @@
 
       <% @dishes.each do |dish| %>
       <tr>
-        <td><%= dish.name %></td>
+        <td><a href="/dishes/<%= dish.id %>"><%= dish.name %></a></td>
         <td>
          <!--Probably only want this if the bookmark is not present yet-->
          <form action= "/create_bookmark" method= "post">
