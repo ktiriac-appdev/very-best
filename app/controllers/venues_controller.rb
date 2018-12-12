@@ -4,7 +4,7 @@ class VenuesController < ApplicationController
     @venues = @q.result(:distinct => true).includes(:bookmarks, :neighborhood, :fans, :specialties).page(params.fetch("page", nil)).per(10)
     @venues.each do|venue|
       sanitized_street_address = URI.encode(venue.address)
-      url = "https://maps.googleapis.com/maps/api/geocode/json?address="+sanitized_street_address+"&key=AIzaSyA5qwIlcKjijP_Ptmv46mk4cCjuWhSzS78"
+      url = "https://maps.googleapis.com/maps/api/geocode/json?address="+sanitized_street_address+"&key=AIzaSyCOTPWiuvyyo6sKoIBzKA4-1ol-vTOIOlM"
       parsed_data = JSON.parse(open(url).read)
       @latitude = parsed_data.dig("results", 0, "geometry", "location", "lat")
       @longitude = parsed_data.dig("results", 0, "geometry", "location", "lng")
@@ -26,7 +26,7 @@ class VenuesController < ApplicationController
     @bookmark = Bookmark.new
     @venue = Venue.find(params.fetch("id"))
      sanitized_street_address = URI.encode(@venue.address)
-      url = "https://maps.googleapis.com/maps/api/geocode/json?address="+sanitized_street_address+"&key=AIzaSyA5qwIlcKjijP_Ptmv46mk4cCjuWhSzS78"
+      url = "https://maps.googleapis.com/maps/api/geocode/json?address="+sanitized_street_address+"&key=AIzaSyCOTPWiuvyyo6sKoIBzKA4-1ol-vTOIOlM"
       parsed_data = JSON.parse(open(url).read)
       @latitude = parsed_data.dig("results", 0, "geometry", "location", "lat")
       @longitude = parsed_data.dig("results", 0, "geometry", "location", "lng")

@@ -16,40 +16,39 @@
 <div class="row">
   <div class="col-md-12 mb-2">
     <dl class="dl-horizontal">
-      <dt>Name</dt>
-      <dd><%= @venue.name %></dd>
-
-      <dt>Address</dt>
       <dd>
         <div>
           <div id="location_map" style="height: 480px;"></div>
         </div>
       </dd>
-
-      <dt>Neighborhood</dt>
-      <dd>
-        <% if @venue.neighborhood.present? %>
-          <a href="/neighborhoods/<%= @venue.neighborhood_id %>">
-            <%= @venue.neighborhood.name %>
-          </a>
-        <% end %>
-      </dd>
-
     </dl>
-
-    <div class="btn-group btn-group-justified">
-      <a href="/venues" class="btn btn-primary">
-        Back
-      </a>
-      <a href="/venues/<%= @venue.id %>/edit" class="btn btn-warning">
-        Edit
-      </a>
-      <a href="/delete_venue/<%= @venue.id %>" class="btn btn-danger" rel="nofollow">
-        Delete
-      </a>
-    </div>
   </div>
 </div>
+
+<ul class="list-group">
+        <li class="list-group-item list-group-item-success">
+          Dishes you loved here
+        </li>
+        
+        <% @venue.specialties.each do |dish| %>
+        <li class="list-group-item">
+          <a href="/dishes/<%= dish.id %>">
+            <%= dish.name %>
+          </a>
+          <div class="btn-group btn-group-xs float-right">
+            <small class="float-right text-muted">
+              <%= time_ago_in_words(Bookmark.where(dish_id: dish.id, venue_id: @venue.id, user_id: current_user.id).first.created_at) %> ago
+            <a href="/bookmarks/<%= Bookmark.where(dish_id: dish.id, venue_id: @venue.id, user_id: current_user.id).first.id %>/edit" class="btn">
+              <i class="fa fa-edit"></i>
+            </a>
+            <a href="/delete_bookmark/<%= Bookmark.where(dish_id: dish.id, venue_id: @venue.id, user_id: current_user.id).first.id %>" class="btn" rel="nofollow">
+              <i class="fa fa-trash-o"></i>
+            </a>
+            </small>
+          </div>
+        </li>
+      <% end %>
+      
 
 <!-- A Venue has many bookmarks -->
 
