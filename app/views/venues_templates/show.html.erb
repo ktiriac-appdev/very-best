@@ -73,13 +73,7 @@
       <input type="hidden" name="user_id" value="<%= current_user.id %>">
 
       <!-- Label and input for notes -->
-      <div class="form-group">
-        <label for="notes" class="control-label">
-          Notes
-        </label>
-
-        <textarea id="notes" name="notes" placeholder="Notes" class="form-control" rows="3"></textarea>
-      </div>
+      <input type="hidden" name="notes" value="<%=nil%>">
 
       <button class="btn btn-block btn-success">
         Create Bookmark
