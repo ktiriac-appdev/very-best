@@ -36,7 +36,7 @@
          <% if @dish.bookmarks.where(user_id: current_user.id).count != 0 %>
          
          <% @dish.bookmarks.where(user_id: current_user.id).each do |bookmark| %>
-         <li class="list-group-item">
+         <p class="list-group-item">
            <a href="/venues/<%= bookmark.venue.id %>">
             <%= bookmark.venue.name %>
            </a>
@@ -54,7 +54,7 @@
             </a>
           </div>
           </small>
-          </li>
+          </p>
          <% end %>
          <% else %>
          <% end %>
