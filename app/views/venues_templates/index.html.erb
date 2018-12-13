@@ -55,7 +55,7 @@
         <th>Actions</th>
       </tr>
       
-      <% current_user.bookmarked_venues.each do |venue| %>
+      <% current_user.bookmarked_venues.uniq.each do |venue| %>
       <tr>
         <td><a href="/venues/<%= venue.id %>"><%= venue.name %></td></a>
         <td>
@@ -73,7 +73,7 @@
       </tr>
       <% end %>
     </table>
-    <%= paginate @venues, theme: 'twitter-bootstrap-4' %>
+    <!--<%#= paginate @venues, theme: 'twitter-bootstrap-4' %>-->
   </div>
 </div>
 
