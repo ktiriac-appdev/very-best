@@ -38,7 +38,7 @@
          <% @dish.bookmarks.where(user_id: current_user.id).each do |bookmark| %>
          <li class="list-group-item">
            <a href="/venues/<%= bookmark.venue.id %>">
-            <%= bookmark.venue.name %>
+            <p><%= bookmark.venue.name %>
            </a>
            
            <small class="float-right text-muted">
